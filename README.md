@@ -1,2 +1,2 @@
 # vSphere-client
-Java Client for vSphere
+Java Client for vSphere 6.7
