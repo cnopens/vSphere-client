@@ -463,7 +463,7 @@ public class VirtualMachineImpl extends AbstractImpl  {
 	}
 	
 	public boolean unplugVMDisk(String vmid, String diskId) throws Exception {
-		listWithoutCookie(this.client.getUrl() + "/rest/vcenter/vm/" + vmid + "/hardware/disk/" + diskId);
+		deleteWithoutCookie(this.client.getUrl() + "/rest/vcenter/vm/" + vmid + "/hardware/disk/" + diskId);
 		return true;
 	}
 	
