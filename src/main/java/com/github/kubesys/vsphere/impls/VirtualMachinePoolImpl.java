@@ -363,4 +363,32 @@ public class VirtualMachinePoolImpl extends AbstractImpl  {
 		return null;
 	}
 
+	public static final String DT_IN_HOST = "{\r\n"
+			+ "	\"constraintObjectId\": \"DATASTORE\",\r\n"
+			+ "	\"queryFilterId\": \"relatedItemsListFilterId\",\r\n"
+			+ "	\"filterParams\": [\"hostsForDatastore\"],\r\n"
+			+ "	\"requestedProperties\": [\"id\", \"primaryIconId\", \"name\", \"labelIds\", \"stateLabel\", \"summary.overallStatus\", \"cluster\", \"hostClusterName\", \"cpuUsage\", \"memoryUsage\", \"dasHostState.@formatted\", \"runtime.dasHostState.state\", \"summary.quickStats.uptime.@formatted\"],\r\n"
+			+ "	\"dataModels\": [\"HostSystem\"],\r\n"
+			+ "	\"take\": 100,\r\n"
+			+ "	\"skip\": 0,\r\n"
+			+ "	\"sort\": [{\r\n"
+			+ "		\"field\": \"name\",\r\n"
+			+ "		\"dir\": \"asc\"\r\n"
+			+ "	}],\r\n"
+			+ "	\"listViewId\": \"vsphere.core.host.list\",\r\n"
+			+ "	\"isLiveRefreshRequest\": false\r\n"
+			+ "}";
+	
+	public JsonNode getDatastoreInHostInfo(String datastore, String cookie, String token) {
+		try {
+			String id = search(datastore, "Datastore", cookie)
+									.get("id").asText();
+			OkHttpClient newClient = client.createHttpClient(true);
+			return postWithCookie(newClient, this.client.getUrl() + "/ui/list/ex/", 
+						DT_IN_HOST.replace("DATASTORE", id), cookie, token);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

@@ -128,7 +128,6 @@ public class VsphereClient {
 	protected X509TrustManager initTrustManager() {
 		return new X509TrustManager() {
 
-			@Override
 		    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		    	// Do nothing
 				if (chain == null) {
@@ -136,7 +135,6 @@ public class VsphereClient {
 		    	}
 		    }
 
-		    @Override
 		    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		    	// Do nothing
 		    	if (chain == null) {
@@ -144,7 +142,6 @@ public class VsphereClient {
 		    	}
 		    }
 
-		    @Override
 		    public X509Certificate[] getAcceptedIssuers() {
 		        return new X509Certificate[0];
 		    }
@@ -162,7 +159,6 @@ public class VsphereClient {
 				return super.toString();
 			}
 
-			@Override
 			public boolean verify(String hostname, SSLSession arg1) {
 				return hostname != null;
 			}
