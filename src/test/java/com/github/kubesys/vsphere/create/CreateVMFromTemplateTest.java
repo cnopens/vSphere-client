@@ -7,13 +7,16 @@ import com.github.kubesys.vsphere.VsphereClientTest;
 public class CreateVMFromTemplateTest extends VsphereClientTest {
 	
 	public static void main(String[] args) throws Exception {
-		String cookie = "CastleSessionvsphere.local=_398a14e9cf74fb2a29e8d104c4c84b8c; JSESSIONID=E84915ACC91D86155BF3D9BE6064E7CDBFFA; VSPHERE-USERNAME=Administrator%40VSPHERE.LOCAL; VSPHERE-CLIENT-SESSION-INDEX=_b7d785162db290db0d6aba13892ff4a1";
-		String token = "c77f7625-e889-4a02-8aa6-6c401696563c";
 		VsphereClient vClient = getClient();
-		String taskId = vClient.virtualMachines().createFromTemplate("henry20", "vm-238", "group-v3", 
-				"datastore-18", "新建资源池1", "host-17", cookie, token).get("task").get("value").asText();
+		String cookie = vClient.getCookie();
+		String token = vClient.getXSRFToken(cookie);
+//		JsonNode createFromTemplate = vClient.virtualMachines().createFromTemplate("henry20", "vm-70", "9e4a98b3-189a-475b-b093-f5cda70cd2a5", "datastore-10", "group-v3", 
+//				"resgroup-17", "host-9", cookie, token);
+		JsonNode createFromTemplate = vClient.virtualMachines().createFromTemplate("henry22", "vm-70", "9e4a98b3-189a-475b-b093-f5cda70cd2a5", "datastore-10", "group-v3", 
+				"resgroup-26", null, cookie, token);
+		System.out.println(createFromTemplate.toPrettyString());
+		String taskId = createFromTemplate.get("task").get("value").asText();
 
-		
 		check(vClient, taskId, cookie);
 		
 	}

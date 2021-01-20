@@ -81,10 +81,10 @@ public class VsphereClient {
 		this.httpClient = createHttpClient(false);
 		this.session = new ObjectMapper().readTree(
 				simpleLogin(username, password).body().byteStream()).get("value").asText();
-		JsonNode json = virtualMachinePools().listNetworks();
-		if (json.has("type") && json.get("type")
-					.asText().contains("unauthenticated")) {
-			throw new Exception("unauthenticated errors, please check url, username, password");
+		try {
+			virtualMachines().valid(virtualMachinePools().listNetworks());
+		} catch (Exception ex) {
+			throw new Exception("Invalid url, or username, or password");
 		}
 	}
 
@@ -102,6 +102,10 @@ public class VsphereClient {
     							initTrustManager), initTrustManager)
 				.hostnameVerifier(initHostnameVerifier())
 				.followRedirects(redirect)
+				.callTimeout(java.time.Duration.ZERO)
+				.connectTimeout(java.time.Duration.ZERO)
+				.readTimeout(java.time.Duration.ZERO)
+				.writeTimeout(java.time.Duration.ZERO)
 				.build();
 	}
 
@@ -124,7 +128,6 @@ public class VsphereClient {
 	protected X509TrustManager initTrustManager() {
 		return new X509TrustManager() {
 
-			@Override
 		    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		    	// Do nothing
 				if (chain == null) {
@@ -132,7 +135,6 @@ public class VsphereClient {
 		    	}
 		    }
 
-		    @Override
 		    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		    	// Do nothing
 		    	if (chain == null) {
@@ -140,7 +142,6 @@ public class VsphereClient {
 		    	}
 		    }
 
-		    @Override
 		    public X509Certificate[] getAcceptedIssuers() {
 		        return new X509Certificate[0];
 		    }
@@ -158,7 +159,6 @@ public class VsphereClient {
 				return super.toString();
 			}
 
-			@Override
 			public boolean verify(String hostname, SSLSession arg1) {
 				return hostname != null;
 			}

@@ -8,7 +8,7 @@ import com.github.kubesys.vsphere.VsphereClientTest;
 public class UnplugDiskTest extends VsphereClientTest {
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(client.virtualMachinePools().getResourcePool("resgroup-17"));
+		System.out.println(getClient().virtualMachines().unplugVMDisk("vm-21", "2001"));
 	}
 }
 

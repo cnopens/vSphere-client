@@ -6,11 +6,12 @@ import com.github.kubesys.vsphere.VsphereClientTest;
 /**
  * Unit test for simple App.
  */
-public class GetVMHardwareInfoTest extends VsphereClientTest {
+public class GetDatastoreInHostInfoTest extends VsphereClientTest {
 
 	public static void main(String[] args) throws Exception {
 		VsphereClient vClient = getClient();
-		System.out.println(vClient.virtualMachines().getVMHardwareInfo("centos7", vClient.getCookie()));
+		String cookie = vClient.getCookie();
+		System.out.println(vClient.virtualMachinePools().getDatastoreInHostInfo(
+				"datastore1", cookie, vClient.getXSRFToken(cookie)));
 	}
-
 }
